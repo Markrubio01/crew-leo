@@ -26,3 +26,21 @@ export async function createProject(
     
     return data;
 }
+
+export async function getProjectsByEmployee(employeeId: string) {
+  const { data, error } = await supabase
+    .from("ProjectAssignment")
+    .select(`
+      Project (
+        id,
+        name,
+        location,
+        companyId
+      )
+    `)
+    .eq("employeeId", employeeId);
+
+  if (error) throw error;
+
+  return data?.map((item) => item.Project);
+}
